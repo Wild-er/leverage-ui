@@ -64,7 +64,8 @@ function calculate_spot_pnl_percent(target_price) {
     return Math.max(0, spot_pnl_percent); // Clip at 0, assuming no profit if target < breakeven for spot
 }
 
-function calculate_leverage_pnl_percent(target_price, leverage) {
+// Add timeframe_days to the function signature
+function calculate_leverage_pnl_percent(target_price, leverage, timeframe_days) { 
     // Notional value of the trade
     const notional_value = entry_price * order_size * leverage;
     
@@ -332,21 +333,53 @@ function displayRiskCurve(tradeParams, entryPrice, targetPriceInput) {
 document.addEventListener('DOMContentLoaded', async () => {
     const currentBeraPriceSpan = document.getElementById('current-bera-price');
     console.log("currentBeraPriceSpan element:", currentBeraPriceSpan); // Debug line
+    // Declare targetPriceInput earlier so it can be used for default value setting
+    const targetPriceInput = document.getElementById('target-price'); 
+    // Declare timeframeInput earlier for default value setting
+    const timeframeInput = document.getElementById('timeframe');
+
+    // Set default timeframe
+    if (timeframeInput) { // Check if element exists
+        const possibleTimeframes = [7, 14, 21, 28];
+        const randomIndex = Math.floor(Math.random() * possibleTimeframes.length);
+        const defaultTimeframe = possibleTimeframes[randomIndex];
+        timeframeInput.value = defaultTimeframe;
+        console.log(`Default timeframe set to: ${defaultTimeframe}`); // Optional: for debugging
+    } else {
+        console.error("Timeframe input field not found!");
+    }
+
     try {
         const price = await fetchBeraPrice();
         console.log("Fetched price:", price, "Type:", typeof price); // Debug line
         entry_price = price; // Update global entry_price
         console.log("Attempting to set textContent for currentBeraPriceSpan"); // Debug line
-        currentBeraPriceSpan.textContent = `$${price.toFixed(2)}`;
-        console.log("textContent set to:", currentBeraPriceSpan.textContent); // Debug line
+        if (currentBeraPriceSpan) { // Check if span exists
+            currentBeraPriceSpan.textContent = `$${price.toFixed(2)}`;
+            console.log("textContent set to:", currentBeraPriceSpan.textContent); // Debug line
+        } else {
+            console.error("currentBeraPriceSpan not found!");
+        }
+
+        // Set default target price
+        if (targetPriceInput) { // Check if element exists
+            const defaultTargetPrice = entry_price * 1.25;
+            targetPriceInput.value = defaultTargetPrice.toFixed(2);
+            console.log(`Default target price set to: ${targetPriceInput.value}`); // Optional: for debugging
+        } else {
+            console.error("Target price input field not found!");
+        }
+
     } catch (error) {
         console.error("Failed to fetch Bera price:", error);
-        currentBeraPriceSpan.textContent = "Error loading price";
+        if (currentBeraPriceSpan) {
+            currentBeraPriceSpan.textContent = "Error loading price";
+        }
         // Keep default entry_price or handle error as appropriate
     }
 
-    const targetPriceInput = document.getElementById('target-price');
-    const timeframeInput = document.getElementById('timeframe');
+    // suggestTradeBtn and tradeSuggestionDiv are only needed for the event listener
+    // timeframeInput is already declared above
     const suggestTradeBtn = document.getElementById('suggest-trade-btn');
     const tradeSuggestionDiv = document.getElementById('trade-suggestion');
 
