@@ -1,0 +1,89 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.input-section label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-section input[type="number"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.input-section button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.input-section button:hover {
+    background-color: #2980b9;
+}
+
+.output-section {
+    margin-top: 30px;
+}
+
+#trade-suggestion p {
+    background-color: #eaf4ff;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #cce0ff;
+    line-height: 1.6;
+}
+
+#trade-suggestion .error {
+    background-color: #ffeaea;
+    border: 1px solid #ffcccc;
+    color: #c0392b;
+}
+
+#trade-suggestion strong {
+    color: #2980b9;
+}

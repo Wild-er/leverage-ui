@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leverage Trading Interface</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Trading Interface</h1>
+
+        <div class="input-section">
+            <label for="target-price">Target Price ($):</label>
+            <input type="number" id="target-price" step="0.01" placeholder="Enter target price">
+
+            <label for="timeframe">Timeframe (Days):</label>
+            <input type="number" id="timeframe" placeholder="Enter timeframe in days">
+
+            <button id="suggest-trade-btn">Suggest Trade</button>
+        </div>
+
+        <div class="output-section">
+            <h2>Suggested Trade</h2>
+            <div id="trade-suggestion">
+                <p>Please enter your target price and timeframe to get a suggestion.</p>
+                <!-- Suggestions will be populated here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
