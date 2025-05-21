@@ -15,8 +15,9 @@ body {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
+    width: 95%; /* Allow some padding from screen edges */
+    max-width: 700px; /* Keep a max-width for larger screens */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 h1 {
@@ -40,18 +41,19 @@ h2 {
     font-weight: bold;
 }
 
-.input-section input[type="number"] {
-    width: calc(100% - 22px);
-    padding: 10px;
+.input-section input[type="number"],
+.input-section button {
+    width: 100%; /* Make them full width of their container */
+    padding: 10px; /* Standardized padding, adjust as needed */
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Crucial for 100% width with padding/border */
 }
 
+/* Specifics for button if different from input type number */
 .input-section button {
-    display: block;
-    width: 100%;
-    padding: 12px;
+    /* width: 100% and box-sizing: border-box are already set above */
+    padding: 12px; /* Button specific padding */
     background-color: #3498db;
     color: white;
     border: none;
@@ -91,17 +93,22 @@ h2 {
 /* Add to existing style.css */
 .input-section .input-group {
     margin-top: 15px;
+    display: flex; /* Changed from block */
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 10px; /* Space between items if they wrap */
 }
 
-.input-section .input-group label { /* General label for the group */
-    display: block;
+.input-section .input-group label { /* General label for the group - This is the one ABOVE the radio buttons, not for each radio */
+    display: block; /* This should remain block to be on its own line */
     margin-bottom: 5px;
     font-weight: bold;
+    width: 100%; /* Ensure it takes full width if it's part of a flex container not intended */
 }
 
 .input-section .input-group div label { /* Label for each radio button */
     font-weight: normal;
-    margin-right: 10px;
+    margin-right: 5px; /* Reduce right margin if too much */
+    /* display: block or flex for stacking if needed at smaller sizes via media query - not applying yet*/
 }
 
 .input-section .input-group div input[type="radio"] {
@@ -121,9 +128,69 @@ h2 {
 }
 
 .chart-container {
-    margin-top: 25px; /* Add some space above the chart */
+    position: relative; /* Needed for Chart.js tooltips usually */
+    margin-top: 25px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #f9f9f9;
+    width: 90%; /* More controlled width */
+    max-width: 700px; /* Max width for larger screens */
+    height: 40vh; /* Viewport height based */
+    min-height: 300px; /* Minimum height to prevent squishing */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Media Queries for Responsiveness */
+
+/* For smaller screens (e.g., mobile phones) */
+@media (max-width: 600px) {
+    .container {
+        width: 100%; /* Full width on small screens */
+        padding: 15px; /* Reduce padding */
+        margin-top: 0; /* Remove top margin if any */
+    }
+
+    h1 {
+        font-size: 1.8em; /* Adjust heading size */
+    }
+
+    .input-section label {
+        font-size: 0.95em; /* Adjust label size */
+    }
+
+    .input-section input[type="number"],
+    .input-section button {
+        padding: 12px; /* Adjust padding for inputs/buttons for better touch targets */
+        font-size: 1em;
+    }
+    
+    .input-section .input-group div {
+        flex-direction: column; /* Stack radio buttons vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .input-section .input-group div label {
+        margin-bottom: 8px; /* Add some space between stacked radio labels */
+    }
+
+    .chart-container {
+        width: 100%;
+        height: 50vh; /* May need more height on mobile if width is constrained */
+        min-height: 250px; /* Adjust min-height for mobile */
+    }
+
+    .output-section #trade-suggestion p {
+        font-size: 0.9em; /* Adjust suggestion text size */
+        padding: 12px;
+    }
+}
+
+/* For very small screens (if needed) */
+@media (max-width: 400px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    /* Further adjustments can be made here */
 }

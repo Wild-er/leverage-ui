@@ -79,24 +79,6 @@ function calculate_leverage_pnl_percent(target_price, leverage) {
 
     const net_pnl = gross_pnl_on_notional - actual_fees;
     
-    // Initial investment (actual capital at risk by the trader)
-    const initial_investment = entry_price * order_size; 
-    
-    const leverage_pnl_percent = (net_pnl / initial_investment) * 100;
-    
-    // If target price is not met, or if fees outweigh profit, PnL can be negative.
-    // The python script clips this at 0 using np.clip(..., a_min=0, a_max=None)
-    // For example, if target_price is less than breakeven_price.
-    const breakeven = calculate_breakeven_price(leverage);
-    if (target_price < breakeven) {
-        return 0; // No profit if target is below breakeven
-    }
-    // Also, ensure liquidation doesn't happen before target
-    const liquidation = calculate_liquidation_price(leverage);
-    if (target_price <= liquidation && target_price < entry_price) { // relevant for longs
-        return 0; // or a large negative number representing loss of margin, but python clips to 0
-    }
-
     // entry_price and order_size are global variables/constants
     const profit_before_trading_fees_and_borrow_fees = (target_price - entry_price) * order_size * leverage;
     
@@ -108,11 +90,16 @@ function calculate_leverage_pnl_percent(target_price, leverage) {
 
     const final_pnl = profit_before_trading_fees_and_borrow_fees - trading_fees - estimated_d8x_borrow_fees;
     
+    // Initial investment (actual capital at risk by the trader)
     const initial_investment = order_size * entry_price; 
-    const leverage_pnl_percent = (final_pnl / initial_investment) * 100;
+    const pnl_percent_after_all_fees = (final_pnl / initial_investment) * 100;
     
-    // Return actual PnL, can be negative. UI can decide how to display.
-    return leverage_pnl_percent;
+    // The old breakeven and liquidation checks for returning 0 are no longer needed here
+    // as the PnL can be negative and is handled by the caller (suggest_trade) 
+    // for viability decisions.
+    // We return the actual PnL percentage.
+
+    return pnl_percent_after_all_fees;
 }
 
 function suggest_trade(target_price_input, timeframe_input, risk_level_input) {
@@ -196,12 +183,12 @@ function suggest_trade(target_price_input, timeframe_input, risk_level_input) {
 }
 
 async function fetchBeraPrice() {
-    // console.log("Fetching Bera price..."); // Optional: keep for debugging
+    console.log("Fetching Bera price START..."); // Debug line
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
     // Simulate a price, e.g., a slight variation or a fixed new price.
     const fetchedPrice = 4.02; 
-    // console.log("Fetched Bera price:", fetchedPrice); // Optional: keep for debugging
+    console.log("Fetching Bera price ENDED. Price:", fetchedPrice); // Debug line
     return fetchedPrice;
 }
 
@@ -344,10 +331,14 @@ function displayRiskCurve(tradeParams, entryPrice, targetPriceInput) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const currentBeraPriceSpan = document.getElementById('current-bera-price');
+    console.log("currentBeraPriceSpan element:", currentBeraPriceSpan); // Debug line
     try {
         const price = await fetchBeraPrice();
+        console.log("Fetched price:", price, "Type:", typeof price); // Debug line
         entry_price = price; // Update global entry_price
+        console.log("Attempting to set textContent for currentBeraPriceSpan"); // Debug line
         currentBeraPriceSpan.textContent = `$${price.toFixed(2)}`;
+        console.log("textContent set to:", currentBeraPriceSpan.textContent); // Debug line
     } catch (error) {
         console.error("Failed to fetch Bera price:", error);
         currentBeraPriceSpan.textContent = "Error loading price";
