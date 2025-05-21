@@ -5,17 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leverage Trading Interface</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Trading Interface</h1>
 
         <div class="input-section">
+            <div class="current-price-section">
+                <p>Current Bera Price: <span id="current-bera-price">Loading...</span></p>
+            </div>
+
             <label for="target-price">Target Price ($):</label>
             <input type="number" id="target-price" step="0.01" placeholder="Enter target price">
 
             <label for="timeframe">Timeframe (Days):</label>
             <input type="number" id="timeframe" placeholder="Enter timeframe in days">
+
+            <div class="input-group">
+                <label>Risk Level:</label>
+                <div>
+                    <input type="radio" id="risk-low" name="risk-level" value="low">
+                    <label for="risk-low">Low</label>
+
+                    <input type="radio" id="risk-medium" name="risk-level" value="medium" checked>
+                    <label for="risk-medium">Medium</label>
+
+                    <input type="radio" id="risk-high" name="risk-level" value="high">
+                    <label for="risk-high">High</label>
+                </div>
+            </div>
 
             <button id="suggest-trade-btn">Suggest Trade</button>
         </div>
@@ -25,6 +44,9 @@
             <div id="trade-suggestion">
                 <p>Please enter your target price and timeframe to get a suggestion.</p>
                 <!-- Suggestions will be populated here by JavaScript -->
+            </div>
+            <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin-top: 20px;">
+                <canvas id="riskCurveChart"></canvas>
             </div>
         </div>
     </div>

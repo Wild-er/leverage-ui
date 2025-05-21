@@ -87,3 +87,43 @@ h2 {
 #trade-suggestion strong {
     color: #2980b9;
 }
+
+/* Add to existing style.css */
+.input-section .input-group {
+    margin-top: 15px;
+}
+
+.input-section .input-group label { /* General label for the group */
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input-section .input-group div label { /* Label for each radio button */
+    font-weight: normal;
+    margin-right: 10px;
+}
+
+.input-section .input-group div input[type="radio"] {
+    margin-right: 5px;
+}
+
+.current-price-section {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    text-align: center;
+}
+#current-bera-price {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.chart-container {
+    margin-top: 25px; /* Add some space above the chart */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
